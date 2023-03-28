@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "lesson31"
+version = "0.1.0"
+description = ""
+authors = ["Andrew <aat-78@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.1.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
