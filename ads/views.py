@@ -9,68 +9,16 @@ from rest_framework.viewsets import ModelViewSet
 from ads.models import Category, Ad, Selection
 from ads.permissions import IsOwner, IsStaff
 from ads.serializers import AdSerializer, AdDetailSerializer, AdListSerializer, SelectionSerializer, \
-    SelectionCreateSerializer
+    SelectionCreateSerializer, CategorySerializer
 
 
 def root(request):
     return JsonResponse({"status": "ok"})
 
 
-class CategoryDetailView(generic.DetailView):
-    model = Category
-
-    def get(self, request, *args, **kwargs):
-        category = self.get_object()
-        return JsonResponse({"id": category.pk, "name": category.name, })
-
-
-class CatListCreateView(generic.ListView):
-    model = Category
+class CatViewSet(ModelViewSet):
     queryset = Category.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        cat_list = self.queryset
-
-        return JsonResponse([{"id": cat.pk,
-                              "name": cat.name,
-                              } for cat in cat_list], safe=False)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryCreateView(generic.CreateView):
-    model = Category
-
-    def post(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        category = Category.objects.create(**data)
-        return JsonResponse([{"id": category.pk,
-                              "name": category.name,
-                              }], safe=False)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryUpdateView(generic.UpdateView):
-    model = Category
-
-    def patch(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        category = Category.objects.get(id=kwargs['pk'])
-        category.name = data['name']
-        category.save()
-        return JsonResponse([{"id": category.pk,
-                              "name": category.name,
-                              }], safe=False)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryDeleteView(generic.DeleteView):
-    model = Category
-    success_url = '/'
-
-    def delete(self, request, *args, **kwargs):
-        super().delete(request, *args, **kwargs)
-
-        return JsonResponse({"status": "ok"}, status=200)
+    serializer_class = CategorySerializer
 
 
 @method_decorator(csrf_exempt, name='dispatch')
