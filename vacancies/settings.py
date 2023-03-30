@@ -146,3 +146,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TOTAL_ON_PAGE = 10
 AUTH_USER_MODEL = "users.User"
+
